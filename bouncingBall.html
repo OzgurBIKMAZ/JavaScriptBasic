@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bouncing Ball</title>
+</head>
+<body>
+    <canvas id="canvas_main" style="border:1px solid" width="640" height="480"></canvas>
+
+    <script>
+        var canvas = document.getElementById("canvas_main");
+        var drawing = canvas.getContext("2d");
+        var canvas_width = canvas.width;
+        var canvas_height = canvas.height;
+        var coorX = canvas_width / 2;
+        var coorY = canvas_height / 2;
+        var dX = 5;
+        var dY = 5;
+        var ballSize = 50;
+        var ballColor = "#00FFFF";
+        var backgroundColor = "#FFFFFF";
+
+        function BouncingBall() {
+            ClearCanvas();											//First clear canvas
+            drawing.beginPath();
+            drawing.arc(coorX, coorY, ballSize, 0, 2 * Math.PI);	//After that, create ball, when the ball create first time, it will be center of canvas
+            drawing.closePath();
+            drawing.fillStyle = ballColor;							//Get ballColor, default color is Cyan
+            coorX += dX;										    //Get new coordinates of ball
+            coorY += dY;
+            drawing.fill();
+            CheckWall();                                           //Check ball touch the walls
+        }
+
+        function ClearCanvas() //Clear canvas screen
+        {
+            drawing.beginPath();
+            drawing.fillStyle = backgroundColor; // default color is White
+            drawing.fillRect(0, 0, canvas_width, canvas_height);
+            drawing.closePath();
+            drawing.fill();
+        }
+
+        function CheckWall() //If ball touch ball change direction
+        {
+            if (coorX >= (canvas_width - ballSize) || coorX <= ballSize)  //If not use ballsize, the ball enter the wall
+            {
+                dX *= -1;
+                ballColor = ChangeColor();
+            }
+            if (coorY >= (canvas_height - ballSize) || coorY <= ballSize) {
+                dY *= -1;
+                ballColor = ChangeColor();
+            }
+        }
+
+        function ChangeColor() //After touch, change ball color randomly
+        {
+            var number = Math.random() * 16777215;
+            var code = parseInt(number);            //Random method return float number
+            var result = "#" + code.toString(16); //Decimal to hex number and add '#'
+            return result;
+        }
+
+        setInterval(BouncingBall, 15); //Every 15 milisec, call BouncingBall method
+
+    </script>
+
+</body>
+</html> 
